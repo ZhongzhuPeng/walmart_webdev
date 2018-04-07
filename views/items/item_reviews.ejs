@@ -1,0 +1,119 @@
+<% include ../partials/header %>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <div align="center" style="padding:10px">
+                <img src="<%= item.largeImage%>">
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="thumbnail">
+                <div class="caption-full">
+                    <h4 class="pull-right">PRICE: $<%= item.salePrice %></h4>
+                    <h4><a><%=item.name%></a></h4>
+                    <p>
+                        <em>Brand: <%= item.brandName %></em>
+                        <a href="<%= item.productUrl %>" class="btn btn-primary pull-right">Purchase Link</a>
+                        <button onclick='addToWishlist("<%=item.itemId%>")' class="btn btn-primary pull-right">
+                            Add to wishlist
+                        </button>
+                    </p>
+                    <hr />
+                    <p><strong>Description:</strong> <div id="sd"><%= item.shortDescription %></div></p>
+                    </ br>
+                    <p><strong>Details:</strong> <div id="ld"><%= item.longDescription %></div></p>
+
+                </div>
+            </div>
+        </div>
+        
+        <div class="well col-md-12">
+            <h3>Reviews</h3>
+            <hr>
+            <% reviews.reviews.forEach(function(review){ %>
+                <div class="row">
+                    <div class="col-md-12">
+                        <h4> <strong><%= review.title %></strong> </h4>
+                        <strong>Overall Rating:</strong> <%= review.overallRating.rating %>
+                        <p><strong>Reviewer:</strong><%= review.reviewer %></p>
+                        <p>    
+                            <strong>Product: </strong><%= review.name %></p>
+                        </p>
+                        <p>
+                            <%= review.reviewText %> 
+                        </p>
+                        
+                        <button type="button" class="btn btn-default btn-md">
+                            <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"><%=review.upVotes%></span>  
+                        </button>
+                        <button type="button" class="btn btn-default btn-md">
+                            <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"><%= review.downVotes %></span> 
+                        </button>
+                        <hr>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+<!--
+
+function addToWishlist(itemId) {
+	var notes=prompt("You can input your comment here","");
+	
+	function post(path, params) {
+        method = "POST"; // Set method to post by default if not specified.
+        // The rest of this code assumes you are not using a library.
+        // It can be made less wordy if you use one.
+        var form = document.createElement("form");
+        form.setAttribute("method", method);
+        form.setAttribute("action", path);
+        for(var key in params) {
+            if(params.hasOwnProperty(key)) {
+                var hiddenField = document.createElement("input");
+                hiddenField.setAttribute("type", "hidden");
+                hiddenField.setAttribute("name", key);
+                hiddenField.setAttribute("value", params[key]);
+                form.appendChild(hiddenField);
+            }
+        }
+    
+        document.body.appendChild(form);
+        form.submit();
+    }
+    post('/items/' + itemId, {notes: notes, itemId : itemId});
+}
+
+
+var decodeEntities = (function() {
+  // this prevents any overhead from creating the object each time
+  var element = document.createElement('div');
+
+  function decodeHTMLEntities (str) {
+    if(str && typeof str === 'string') {
+      // strip script/html tags
+      str = str.replace(/<script[^>]*>([\S\s]*?)<\/script>/gmi, '');
+      str = str.replace(/<\/?\w(?:[^"'>]|"[^"]*"|'[^']*')*>/gmi, '');
+      element.innerHTML = str;
+      str = element.textContent;
+      element.textContent = '';
+    }
+    return str;
+  }
+  return decodeHTMLEntities;
+})();
+
+var ld = document.getElementById("ld");
+ld.innerHTML = decodeEntities(decodeEntities(ld.innerHTML));
+var sd = document.getElementById("sd");
+sd.innerHTML = decodeEntities(decodeEntities(sd.innerHTML));
+
+-->
+</script>
+
+<% include ../partials/footer %>

@@ -1,0 +1,22 @@
+<!-- walmart taxonomy json required -->
+
+<div style="margin: 25px auto;" align="center">
+    <form action="/search" method="POST">
+        <table> <tr>
+            <td><img style="width: 300px" src="/pics/walmart_logo.png"></td>  
+            <td>
+                <select style="width: 180px;" name="categoryId" class="form-control">
+                    <option value="{&quot;id&quot;:&quot;All&quot;, &quot;path&quot;: &quot;All Categories&quot;}">All Categories</option> 
+                    <% taxonomy.categories.forEach(function(subcat) { %>
+                        <option value="{&quot;id&quot;:&quot;<%= subcat.id%>&quot;, &quot;path&quot;: &quot;<%= subcat.path %>&quot;}">
+                            <%= subcat.name %>
+                        </option>   
+                    <% }) %>
+                </select>
+            </td>
+      
+            <td class="form-group"> <input name="search_walmart" placeholder="Search items" style="text-align:right; width: 400px;" type="text" class="form-control"></td>
+            <td  class="form-group"> <button type="submit" class="btn btn-primary">Search</button> </td>
+        </tr> </table>
+    </form>
+</div>

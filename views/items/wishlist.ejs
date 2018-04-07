@@ -1,0 +1,34 @@
+<% include ../partials/header %>
+<h1 align="center">My Wishlist</h1>
+<hr>
+<div class="container">
+    <div class="row text-center" style="display:flex; flex-wrap: wrap;">
+        <% items.forEach(function(item){ %>
+            <div class="col-md-3 col-sm-6">
+                
+                <% if(currentUser && item.author.id.equals(currentUser._id)){ %>
+                <div class="thumbnail">
+                    <img src="<%= item.largeImage %>" style="max-width: 200px; max-height: 200px">
+                    <div class="" style="text-align:center">
+                        <h4 style="max-width: 200"> <%= item.name  %> </h4>
+                    </div>
+                    <div style="text-align:center">
+                        <h4 style="max-width: 200; font-weight: bold"> Sale Price: $<%= item.salePrice  %> </h4>
+                    </div>
+                    <p>My comments: <%= item.notes%></p>
+                    <p>
+                        <a href="/items/<%= item.itemId  %>" class="btn btn-primary">More Info</a>
+                    </p>
+
+                    <form id="delete-form" action="/items/wishlist/<%=item._id %>?_method=DELETE" method="POST">
+                        <input type="submit" class="btn btn-xs btn-danger" value="Delete">
+                    </form>
+                </div>
+                <% } %>
+                
+            </div>
+        <% }) %>
+    </div>
+</div>
+
+<% include ../partials/footer %>

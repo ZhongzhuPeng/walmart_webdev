@@ -1,0 +1,30 @@
+<% include ../partials/header %>
+
+<% include ../partials/search_bar %>
+
+<h1>Search "<%= query %>" in category "<%= path %>"</h1>
+
+
+    <div class="col-md-2 col-lg-2">
+        <%include ../partials/tree_manu %>
+    </div>
+    <div class="col-md-10 col-lg-10" align="center">
+        <% include ../partials/items_list %>
+    
+        <div align="center" class="col-md-12 col-lg-12" >
+            <table> <tr>
+                <td><form action="/search/<%= startPage-24 %>" method="POST">
+                    <button type="submit" class="btn btn-primary form-group" name="url" value="<%= url %>" <% if(!hasPrePage){ %>disabled<% }%>>
+                        <span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>Prev
+                    </button>
+                </form></td>
+            
+                <td><form action="/search/<%= startPage+24 %>" method="POST">
+                    <button type="submit" class="btn btn-primary form-group" name="url" value="<%= url %>" <% if(!hasNextPage){ %>disabled<% }%>>
+                        Next<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+                    </button>
+                </form></td>
+            </tr> </table>
+        </div>
+    </div>
+<% include ../partials/footer %>
