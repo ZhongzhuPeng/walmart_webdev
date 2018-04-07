@@ -2,7 +2,11 @@
 
 <% include ../partials/search_bar %>
 
-<h1>Search "<%= query %>" in category "<%= path %>"</h1>
+<h1>Search 
+        "<%= query %>"
+    in category 
+        "<%= path %>"
+</h1>
 
 
     <div class="col-md-2 col-lg-2">
@@ -17,12 +21,16 @@
                     <button type="submit" class="btn btn-primary form-group" name="url" value="<%= url %>" <% if(!hasPrePage){ %>disabled<% }%>>
                         <span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>Prev
                     </button>
+                    <input type="hidden" name="query" value="<%= query %>"></input>
+                    <input type="hidden" name="path" value="<%= path %>"></input>
                 </form></td>
             
                 <td><form action="/search/<%= startPage+24 %>" method="POST">
                     <button type="submit" class="btn btn-primary form-group" name="url" value="<%= url %>" <% if(!hasNextPage){ %>disabled<% }%>>
                         Next<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
                     </button>
+                    <input type="hidden" name="query" value="<%= query %>"></input>
+                    <input type="hidden" name="path" value="<%= path %>"></input>
                 </form></td>
             </tr> </table>
         </div>

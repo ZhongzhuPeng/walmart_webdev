@@ -65,7 +65,7 @@ router.post("/:startPage", function(req, res) {
                 res.render("search/search_results", 
                     {items: results.items, startPage: startPage, url: req.body.url,
                         hasNextPage: hasNextPage, hasPrePage: hasPrePage,
-                        taxonomy: tax
+                        taxonomy: tax, query: req.body.query, path: req.body.path
                     });
             }
         });
