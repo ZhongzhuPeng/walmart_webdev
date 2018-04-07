@@ -14,6 +14,8 @@ var express     = require("express"),
 var indexRoutes      = require("./routes/index"),
     searchRoutes     = require("./routes/search"),
     itemRoutes       = require("./routes/items");
+
+// mongodb://flyingBeef42:flzx#000cML@ds237389.mlab.com:37389/walmart_webdev
 var url = process.env.DATABASEURL || "mongodb://localhost/walmart";
 mongoose.connect(url);
 
