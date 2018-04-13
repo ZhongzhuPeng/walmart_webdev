@@ -1,0 +1,35 @@
+<!-- walmart texonomy json required -->
+<h2>Categories</h2>
+<script type="text/javascript">
+<!--
+    function toggle_visibility(id) {
+       var e = document.getElementById(id);
+       if(e.style.display == "block") {
+          e.style.display = "none";
+          document.getElementById(id+"_root").src = "/icons/plus.png";
+       }
+       else {
+          e.style.display = "block";
+          document.getElementById(id+"_root").src = "/icons/minus.png";
+       }
+    }
+-->
+</script>
+
+<ul align="left" class="list-unstyled">
+    <% taxonomy.categories.forEach(function(subcat) { %>
+        <li>
+            <img src="/icons/plus.png" id="<%=subcat.name%>_root" onclick="toggle_visibility('<%= subcat.name %>')">
+             <a href="/search/<%=query%>/<%=subcat.path%>/<%=subcat.id%>/<%=sort%>/<%=order%>"><%= subcat.name %></a> 
+        </li>
+
+        <% if(subcat.hasOwnProperty("children")) { %>
+            <ul id="<%= subcat.name %>" style="display: none" >
+            <% subcat.children.forEach(function(child) { %>
+                <li> <a href="/search/<%=query%>/<%=child.path%>/<%=child.id%>/<%=sort%>/<%=order%>"> <%= child.name %> </a> </li>
+            <% }) %>
+            </ul>
+        <% } %>
+
+    <% }) %>
+</ul>

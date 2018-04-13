@@ -8,30 +8,39 @@
         "<%= path %>"
 </h1>
 
-
     <div class="col-md-2 col-lg-2">
-        <%include ../partials/tree_manu %>
+        <h2 class="lead">Sorted by</h2>
+        <div class="list-group">
+            <a href="/search/<%=query%>/<%=path%>/<%=categoryId%>/relevance/asc" class="list-group-item <% if(sort==="relevance"){%>active<%}%>">relevance</a>
+            <a href="/search/<%=query%>/<%=path%>/<%=categoryId%>/price/asc" class="list-group-item <% if(sort==="price"){%>active<%}%>">price</a>
+            <a href="/search/<%=query%>/<%=path%>/<%=categoryId%>/title/asc" class="list-group-item <% if(sort==="title"){%>active<%}%>">title</a>
+            <a href="/search/<%=query%>/<%=path%>/<%=categoryId%>/bestseller/asc" class="list-group-item <% if(sort==="bestseller"){%>active<%}%>">bestseller</a>
+            <a href="/search/<%=query%>/<%=path%>/<%=categoryId%>/customerRating/asc" class="list-group-item <% if(sort==="customerRating"){%>active<%}%>">customer rating</a>
+            <a href="/search/<%=query%>/<%=path%>/<%=categoryId%>/new/asc" class="list-group-item">new</a>
+        </div>
+        <h2 class="lead">Ordered by</h2>
+        <div class="list-group">
+            <a href="/search/<%=query%>/<%=path%>/<%=categoryId%>/<%=sort%>/asc" class="list-group-item <% if(order==="asc"){%>active<%}%>">asc</a>
+            <a href="/search/<%=query%>/<%=path%>/<%=categoryId%>/<%=sort%>/desc" class="list-group-item <% if(order==="desc"){%>active<%}%>">desc</a>
+        </div>
+        <%include ../partials/tree_menu %>
     </div>
     <div class="col-md-10 col-lg-10" align="center">
         <% include ../partials/items_list %>
     
         <div align="center" class="col-md-12 col-lg-12" >
             <table> <tr>
-                <td><form action="/search/<%= startPage-24 %>" method="POST">
-                    <button type="submit" class="btn btn-primary form-group" name="url" value="<%= url %>" <% if(!hasPrePage){ %>disabled<% }%>>
-                        <span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>Prev
-                    </button>
-                    <input type="hidden" name="query" value="<%= query %>"></input>
-                    <input type="hidden" name="path" value="<%= path %>"></input>
-                </form></td>
+                <td>
+                    <a href="/search/<%=query%>/<%=path%>/<%=categoryId%>/<%=sort%>/<%=(startPage-24)>1? (startPage-24) : 1%>" class="btn btn-primary form-group" <% if(!hasPrePage){ %>disabled<% }%>>
+                        <span class="glyphicon glyphicon-menu-left"></span>Prev
+                    </a>
+                </td>
             
-                <td><form action="/search/<%= startPage+24 %>" method="POST">
-                    <button type="submit" class="btn btn-primary form-group" name="url" value="<%= url %>" <% if(!hasNextPage){ %>disabled<% }%>>
-                        Next<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
-                    </button>
-                    <input type="hidden" name="query" value="<%= query %>"></input>
-                    <input type="hidden" name="path" value="<%= path %>"></input>
-                </form></td>
+                <td>
+                    <a href="/search/<%=query%>/<%=path%>/<%=categoryId%>/<%=sort%>/<%=startPage+24%>" class="btn btn-primary form-group" name="url" <% if(!hasNextPage){ %>disabled<% }%>>
+                        Next<span class="glyphicon glyphicon-menu-right"></span>
+                    </a>
+                </td>
             </tr> </table>
         </div>
     </div>

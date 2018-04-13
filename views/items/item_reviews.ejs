@@ -67,9 +67,7 @@ function addToWishlist(itemId) {
 	var notes=prompt("You can input your comment here","");
 	
 	function post(path, params) {
-        method = "POST"; // Set method to post by default if not specified.
-        // The rest of this code assumes you are not using a library.
-        // It can be made less wordy if you use one.
+        method = "POST";
         var form = document.createElement("form");
         form.setAttribute("method", method);
         form.setAttribute("action", path);
@@ -86,7 +84,9 @@ function addToWishlist(itemId) {
         document.body.appendChild(form);
         form.submit();
     }
-    post('/items/' + itemId, {notes: notes, itemId : itemId});
+    if(notes !== null) {
+        post('/items/' + itemId, {notes: notes, itemId : itemId});
+    }
 }
 
 

@@ -8,67 +8,48 @@ router.use(bodyparser.urlencoded({extended:true}));
 //var middleware = require("../middleware");
 
 //show the search results
-router.post("/", function(req, res){
-    var query = req.body.search_walmart;
-    if(!query) res.end();
-    var category = JSON.parse(req.body.categoryId);
-    var categoryId = "&categoryId=" + category.id;
-    var path = category.path;
-    var numItems = "&numItems=24";
-    if(category.id === "All") {
-        categoryId = "";
-    }
-    console.log(req.body);
-    var url = "http://api.walmartlabs.com/v1/search?query="+query+"&apikey=pe7cnbp2zqnbe9zsnu2dvrfu"+"&format=json&"
-            +categoryId + numItems;
+router.get("/:query/:path/:categoryId/:sort/:order/:startPage?", function(req, res){
+    var query = req.params.query;
+    var categoryId = (req.params.categoryId === "All"? "" : "&categoryId=" + req.params.categoryId);
+    var path = req.params.path;
+    var sort = "&sort=" + req.params.sort;
+    var order = "&order=" + req.params.order;
+    var start = Number(req.params.startPage) || 1;
+    var startPage = (start > 1? "&start="+start : "");
+
     var url_tax = "http://api.walmartlabs.com/v1/taxonomy?format=json&apiKey=pe7cnbp2zqnbe9zsnu2dvrfu";
+    var numItems = "&numItems=24";
+    console.log(req.params);
+    
+    var url = "http://api.walmartlabs.com/v1/search?query="+query+
+                "&apikey=pe7cnbp2zqnbe9zsnu2dvrfu"+"&format=json&"
+                +categoryId + numItems + sort + order + startPage;
     console.log(url);
     request(url, function(error, response, body){
         request(url_tax, function(error1, response1, body1){
             if(!error && !error1 && response.statusCode === 200 && response1.statusCode === 200) {
                 var results = JSON.parse(body);
                 var tax = JSON.parse(body1);
-                var hasNextPage = true;
-                if(24 > results.totalResults) {
-                    hasNextPage = false;
-                }
+                var hasNextPage = (start+24 <= results.totalResults);
+                var hasPrePage = (start > 1)
                 res.render("search/search_results", 
-                {items: results.items, startPage: 1, url: url,
-                    hasNextPage: hasNextPage, hasPrePage: false,
-                    taxonomy: tax, query: query, path: path
+                {items: results.items, startPage: start,
+                    hasNextPage: hasNextPage, hasPrePage: hasPrePage,
+                    taxonomy: tax, query: query, path: path, categoryId: req.params.categoryId,
+                    sort: req.params.sort, order: req.params.order
                 });
             }
         });
     });
 })
 
-router.post("/:startPage", function(req, res) {
-    var startPage = Number(req.params.startPage);
-    if(startPage < 1) startPage = 1;
+router.post("/", function(req, res){
+    var query = req.body.search_walmart;
+    if(!query) res.redirect("/");
+    var category = JSON.parse(req.body.categoryId);
+    var path = category.path;
     console.log(req.body);
-    var url = req.body.url + "&start=" + startPage;
-    var url_tax = "http://api.walmartlabs.com/v1/taxonomy?format=json&apiKey=pe7cnbp2zqnbe9zsnu2dvrfu";
+    res.redirect("/search/"+query+"/"+path+"/"+category.id+"/relevance/asc");
+})
 
-    console.log(url);
-    request(url, function(error, response, body){
-        request(url_tax, function(error1, response1, body1){
-            if(!error && !error1 && response.statusCode === 200 && response1.statusCode === 200) {
-                var results = JSON.parse(body);
-                var hasNextPage = true;
-                var hasPrePage = true
-                var tax = JSON.parse(body1);
-                if(startPage+24 > results.totalResults) {
-                    hasNextPage = false;
-                } else if(startPage-24 <1) {
-                    hasPrePage = false;
-                }
-                res.render("search/search_results", 
-                    {items: results.items, startPage: startPage, url: req.body.url,
-                        hasNextPage: hasNextPage, hasPrePage: hasPrePage,
-                        taxonomy: tax, query: req.body.query, path: req.body.path
-                    });
-            }
-        });
-    });
-});
 module.exports = router;
